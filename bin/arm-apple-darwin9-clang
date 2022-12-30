@@ -1,0 +1,11 @@
+#!/bin/sh
+case $0 in
+  *+)
+    cc=clang++
+  ;;
+esac
+
+tripple=${0##*/}
+tripple="${tripple%-"${tripple##*-}"}"
+
+exec "${cc:-clang}" -target "$tripple" -arch armv6 -mlinker-version=609 -miphoneos-version-min=3.0.0 -Wno-unused-command-line-argument -isysroot "${0%/*}/../sdk" --ld-path="${0%/*}/$tripple-ld" "$@"
